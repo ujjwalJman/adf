@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "customerDataflow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -26,17 +26,19 @@
 					"name": "source3"
 				}
 			],
-			"sinks": [
-				{
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "union1"
 				},
 				{
 					"name": "union2"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -70,15 +72,30 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source2",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          CustomerID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          PhoneNumber as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          ZipCode as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source3",
 				"source1, union2 union(byName: true)~> union1",
 				"source2, source3 union(byName: true)~> union2",
-				"union1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"union1 aggregate(groupBy(CustomerID),",
+				"     count = count(CustomerID)) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          CustomerID",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> select1"
 			]
 		}
 	}
