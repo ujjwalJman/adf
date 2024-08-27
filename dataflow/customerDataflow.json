@@ -26,7 +26,15 @@
 					"name": "source3"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "union1"
@@ -36,6 +44,9 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "lookup1"
 				},
 				{
 					"name": "select1"
@@ -91,11 +102,28 @@
 				"source2, source3 union(byName: true)~> union2",
 				"union1 aggregate(groupBy(CustomerID),",
 				"     count = count(CustomerID)) ~> aggregate1",
-				"aggregate1 select(mapColumn(",
-				"          CustomerID",
+				"aggregate1, union1 lookup(aggregate1@CustomerID == union1@CustomerID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 select(mapColumn(",
+				"          CustomerID = union1@CustomerID,",
+				"          FirstName,",
+				"          LastName,",
+				"          Email,",
+				"          PhoneNumber,",
+				"          Address,",
+				"          City,",
+				"          State,",
+				"          ZipCode,",
+				"          Country",
 				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> select1"
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
