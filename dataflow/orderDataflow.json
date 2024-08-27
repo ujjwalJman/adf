@@ -28,6 +28,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				}
 			],
@@ -83,7 +87,7 @@
 				"source1, union1 union(byName: true)~> union2",
 				"union2 sort(asc(OrderID, true),",
 				"     asc(ProductID, true)) ~> sort1",
-				"sort1 sink(allowSchemaDrift: false,",
+				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
