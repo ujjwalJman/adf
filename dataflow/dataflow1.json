@@ -56,7 +56,9 @@
 				"          Orders = count(TotalPrice)) ~> aggregate1",
 				"aggregate1 sort(desc(CityTotalPrice, true),",
 				"     desc(Orders, true)) ~> sort1",
-				"source1 aggregate(groupBy(CustomerID),",
+				"source1 aggregate(groupBy(CustomerID,",
+				"          FirstName,",
+				"          LastName),",
 				"     TotalCustomerPrice = round(sum(TotalPrice), 2)) ~> aggregate2",
 				"aggregate2 sort(desc(TotalCustomerPrice, true)) ~> sort2"
 			]
