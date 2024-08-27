@@ -1,0 +1,9 @@
+{
+	"name": "newwavedatafactory",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7d34250b-a689-409e-8c0a-08c53779c779",
+		"tenantId": "2800c0a0-70e9-49be-8733-faeaa6aced99"
+	}
+}
