@@ -9,13 +9,7 @@
 					{
 						"activity": "OrderDataFlow",
 						"dependencyConditions": [
-							"Completed"
-						]
-					},
-					{
-						"activity": "CustomerDataFlow",
-						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -66,7 +60,14 @@
 			{
 				"name": "OrderDataFlow",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "CustomerDataFlow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
