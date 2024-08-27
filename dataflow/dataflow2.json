@@ -16,6 +16,9 @@
 			"transformations": [
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "sort1"
 				}
 			],
 			"scriptLines": [
@@ -49,9 +52,13 @@
 				"          State,",
 				"          Region),",
 				"     {Total Quantity} = sum(Quantity),",
-				"          {Total Discount} = sum(Discount),",
-				"          {Total Profit} = sum(Profit),",
-				"          {Total Sales} = sum(Sales)) ~> aggregate1"
+				"          {Total Discount} = round(sum(Discount), 2),",
+				"          {Total Profit} = round(sum(Profit), 2),",
+				"          {Total Sales} = round(sum(Sales), 2)) ~> aggregate1",
+				"aggregate1 sort(desc({Total Sales}, true),",
+				"     desc({Total Profit}, true),",
+				"     desc({Total Quantity}, true),",
+				"     asc({Total Discount}, true)) ~> sort1"
 			]
 		}
 	}
