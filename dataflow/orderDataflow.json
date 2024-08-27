@@ -1,0 +1,93 @@
+{
+	"name": "orderDataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "240824_orderdetails",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "240825_orderdetails",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				},
+				{
+					"dataset": {
+						"referenceName": "240826_orderdetails",
+						"type": "DatasetReference"
+					},
+					"name": "source3"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "union2"
+				},
+				{
+					"name": "sort1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          OrderID as short,",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Quantity as short,",
+				"          OrderTimestamp as string,",
+				"          Price as double,",
+				"          CustomerID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          OrderID as short,",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Quantity as short,",
+				"          OrderTimestamp as string,",
+				"          Price as double,",
+				"          CustomerID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
+				"source(output(",
+				"          OrderID as short,",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Quantity as short,",
+				"          OrderTimestamp as string,",
+				"          Price as double,",
+				"          CustomerID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source3",
+				"source2, source3 union(byName: true)~> union1",
+				"source1, union1 union(byName: true)~> union2",
+				"union2 sort(asc(OrderID, true),",
+				"     asc(ProductID, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
