@@ -25,6 +25,21 @@
 				},
 				{
 					"name": "sort2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate3"
+				},
+				{
+					"name": "sort3"
+				},
+				{
+					"name": "aggregate4"
+				},
+				{
+					"name": "sort4"
 				}
 			],
 			"scriptLines": [
@@ -75,7 +90,16 @@
 				"aggregate2 sort(desc({Total Profit}, true),",
 				"     desc({Total Sales}, true),",
 				"     desc({Total Quantity}, true),",
-				"     asc({Total Discount}, true)) ~> sort2"
+				"     asc({Total Discount}, true)) ~> sort2",
+				"source1 derive(dateDistance = {Ship Date} - {Order Date}) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy(Country,",
+				"          State,",
+				"          City),",
+				"     {Average Days To Ship} = round(avg(dateDistance), 1)) ~> aggregate3",
+				"aggregate3 sort(desc({Average Days To Ship}, true)) ~> sort3",
+				"derivedColumn1 aggregate(groupBy({Ship Mode}),",
+				"     AvgDaysTaken = round(avg(dateDistance), 1)) ~> aggregate4",
+				"aggregate4 sort(desc(AvgDaysTaken, true)) ~> sort4"
 			]
 		}
 	}
