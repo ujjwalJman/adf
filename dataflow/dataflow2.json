@@ -19,6 +19,12 @@
 				},
 				{
 					"name": "sort1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "sort2"
 				}
 			],
 			"scriptLines": [
@@ -55,10 +61,21 @@
 				"          {Total Discount} = round(sum(Discount), 2),",
 				"          {Total Profit} = round(sum(Profit), 2),",
 				"          {Total Sales} = round(sum(Sales), 2)) ~> aggregate1",
-				"aggregate1 sort(desc({Total Sales}, true),",
-				"     desc({Total Profit}, true),",
+				"aggregate1 sort(desc({Total Profit}, true),",
+				"     desc({Total Sales}, true),",
 				"     desc({Total Quantity}, true),",
-				"     asc({Total Discount}, true)) ~> sort1"
+				"     asc({Total Profit}, true)) ~> sort1",
+				"source1 aggregate(groupBy(Category,",
+				"          {Sub-Category},",
+				"          Segment),",
+				"     {Total Quantity} = sum(Quantity),",
+				"          {Total Discount} = round(sum(Discount), 2),",
+				"          {Total Profit} = round(sum(Profit), 2),",
+				"          {Total Sales} = round(sum(Sales), 2)) ~> aggregate2",
+				"aggregate2 sort(desc({Total Profit}, true),",
+				"     desc({Total Sales}, true),",
+				"     desc({Total Quantity}, true),",
+				"     asc({Total Discount}, true)) ~> sort2"
 			]
 		}
 	}
