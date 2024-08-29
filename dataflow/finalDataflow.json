@@ -5,26 +5,14 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "order",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
 				},
 				{
-					"dataset": {
-						"referenceName": "customer",
-						"type": "DatasetReference"
-					},
 					"name": "source2"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "DelimitedText4",
-						"type": "DatasetReference"
-					},
 					"name": "sink1"
 				}
 			],
@@ -50,8 +38,7 @@
 				"          CustomerID as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
+				"     validateSchema: false) ~> source1",
 				"source(output(",
 				"          CustomerID as string,",
 				"          FirstName as string,",
@@ -65,8 +52,7 @@
 				"          Country as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source2",
+				"     validateSchema: false) ~> source2",
 				"aggregate1, source2 join(aggregate1@CustomerID === source2@CustomerID,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -97,22 +83,6 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          OrderID as string,",
-				"          CustomerID as string,",
-				"          OrderTimestamp as string,",
-				"          TotalPrice as string,",
-				"          FirstName as string,",
-				"          LastName as string,",
-				"          Email as string,",
-				"          PhoneNumber as string,",
-				"          Address as string,",
-				"          City as string,",
-				"          State as string,",
-				"          ZipCode as string,",
-				"          Country as string,",
-				"          ProductID as string",
-				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]

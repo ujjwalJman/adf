@@ -5,33 +5,17 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "240824_customerdetails",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
 				},
 				{
-					"dataset": {
-						"referenceName": "240825_customerdetails",
-						"type": "DatasetReference"
-					},
 					"name": "source2"
 				},
 				{
-					"dataset": {
-						"referenceName": "240826_customerdetails",
-						"type": "DatasetReference"
-					},
 					"name": "source3"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "customer",
-						"type": "DatasetReference"
-					},
 					"name": "sink1"
 				}
 			],
@@ -66,8 +50,7 @@
 				"          Country as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
+				"     validateSchema: false) ~> source1",
 				"source(output(",
 				"          CustomerID as string,",
 				"          FirstName as string,",
@@ -81,8 +64,7 @@
 				"          Country as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source2",
+				"     validateSchema: false) ~> source2",
 				"source(output(",
 				"          CustomerID as string,",
 				"          FirstName as string,",
@@ -96,8 +78,7 @@
 				"          Country as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source3",
+				"     validateSchema: false) ~> source3",
 				"source1, union2 union(byName: true)~> union1",
 				"source2, source3 union(byName: true)~> union2",
 				"union1 aggregate(groupBy(CustomerID),",
